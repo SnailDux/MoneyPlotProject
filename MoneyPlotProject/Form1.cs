@@ -30,6 +30,7 @@ namespace MoneyPlotProject
         private async void button1_Click(object sender, EventArgs e)
         {
             var p = new MoneyPlotProject.LoadDataHelper();
+            var context = new MoneyDB();
 
             chart1.Series["USD/PLN"].Color = Color.Red;
             chart1.Series["USD/GBP"].Color = Color.Blue;
@@ -40,11 +41,21 @@ namespace MoneyPlotProject
             for (int i = 0; i < n; i++)
             {
                 Money m = await p.Load(i+year);
-                chart1.Series["USD/PLN"].Points.AddXY(i+year, m.Rates.PLN);
-                chart1.Series["USD/GBP"].Points.AddXY(i+year, m.Rates.GBP);
-                chart1.Series["USD/EUR"].Points.AddXY(i+year, m.Rates.EUR);
+                context.MoneyTbl.Add(new ModifiedMoney { timestamp = m.timestamp, sampleYear = i+year, BASE = m.Base, EUR = m.Rates.EUR, GBP = m.Rates.GBP, PLN = m.Rates.PLN });
+
+ //               chart1.Series["USD/PLN"].Points.AddXY(i+year, m.Rates.PLN);
+  //              chart1.Series["USD/GBP"].Points.AddXY(i+year, m.Rates.GBP);
+   //             chart1.Series["USD/EUR"].Points.AddXY(i+year, m.Rates.EUR);
 
             }
+            var toPrint = context.MoneyTbl.ToList();
+            Console.WriteLine("Bede plotowal");
+            toPrint.ForEach(x =>{
+                chart1.Series["USD/PLN"].Points.AddXY(x.sampleYear, x.PLN);
+                chart1.Series["USD/GBP"].Points.AddXY(x.sampleYear, x.GBP);
+                chart1.Series["USD/EUR"].Points.AddXY(x.sampleYear, x.EUR);
+            });
+            Console.WriteLine("Skonczylem plotowac");
         }
     }
 }
