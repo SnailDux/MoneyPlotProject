@@ -42,20 +42,16 @@ namespace MoneyPlotProject
             {
                 Money m = await p.Load(i+year);
                 context.MoneyTbl.Add(new ModifiedMoney { timestamp = m.timestamp, sampleYear = i+year, BASE = m.Base, EUR = m.Rates.EUR, GBP = m.Rates.GBP, PLN = m.Rates.PLN });
-
- //               chart1.Series["USD/PLN"].Points.AddXY(i+year, m.Rates.PLN);
-  //              chart1.Series["USD/GBP"].Points.AddXY(i+year, m.Rates.GBP);
-   //             chart1.Series["USD/EUR"].Points.AddXY(i+year, m.Rates.EUR);
+                context.SaveChanges();
 
             }
+
             var toPrint = context.MoneyTbl.ToList();
-            Console.WriteLine("Bede plotowal");
             toPrint.ForEach(x =>{
                 chart1.Series["USD/PLN"].Points.AddXY(x.sampleYear, x.PLN);
                 chart1.Series["USD/GBP"].Points.AddXY(x.sampleYear, x.GBP);
                 chart1.Series["USD/EUR"].Points.AddXY(x.sampleYear, x.EUR);
             });
-            Console.WriteLine("Skonczylem plotowac");
         }
     }
 }
