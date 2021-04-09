@@ -31,6 +31,7 @@ namespace MoneyPlotProject
         {
             var p = new MoneyPlotProject.LoadDataHelper();
             var context = new MoneyDB();
+         //   context.Database.ExecuteSqlCommand("TRUNCATE TABLE MoneyTbl");
 
             chart1.Series["USD/PLN"].Color = Color.Red;
             chart1.Series["USD/GBP"].Color = Color.Blue;
@@ -41,9 +42,8 @@ namespace MoneyPlotProject
             for (int i = 0; i < n; i++)
             {
                 Money m = await p.Load(i+year);
-                context.MoneyTbl.Add(new ModifiedMoney { timestamp = m.timestamp, sampleYear = i+year, BASE = m.Base, EUR = m.Rates.EUR, GBP = m.Rates.GBP, PLN = m.Rates.PLN });
+                context.MoneyTbl.Add(new ModifiedMoney {timestamp = m.timestamp, sampleYear = i+year, BASE = m.Base, EUR = m.Rates.EUR, GBP = m.Rates.GBP, PLN = m.Rates.PLN });
                 context.SaveChanges();
-
             }
 
             var toPrint = context.MoneyTbl.ToList();

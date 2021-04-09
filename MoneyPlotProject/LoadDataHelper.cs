@@ -11,8 +11,6 @@ namespace MoneyPlotProject
 {
     public class LoadDataHelper
     {
-        //zwraca Task<Money> bo tak trzeba przy asyncu, po wywolaniu mozna podstawic pod wartosc typu Money normalnie 
-        //(patrz From1.cs button1_Click) w petli
         public async Task<Money> Load(int year)
         {
 
